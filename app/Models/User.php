@@ -7,11 +7,12 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -47,9 +48,21 @@ class User extends Authenticatable
         ];
     }
 
+    // A student can register for many courses.
     public function courses()
     {
-        return $this->belongsToMany(Course::class);
+        return $this->belongsToMany(
+            Course::class,
+            'registrations',
+            'student_id',
+            'course_id'
+        )->withTimestamps();
+    }
+
+    // A lecturer can teach many courses.
+    public function teachingCourses()
+    {
+        return $this->hasMany(Course::class, 'lecturer_id');
     }
 }
 

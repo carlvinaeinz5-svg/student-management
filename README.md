@@ -1,59 +1,57 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Student Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Laravel application for managing students, lecturers, courses, and course registrations. The application uses Laravel Breeze for authentication and Spatie Laravel Permission for role-based access.
 
-## About Laravel
+## Requirements
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- PHP 8.2 or later with the SQLite extension enabled
+- Composer
+- Node.js with npm
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Setup on Windows PowerShell
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Run these commands from the project folder:
 
-## Learning Laravel
+```powershell
+composer install
+if (!(Test-Path .env)) { Copy-Item .env.example .env }
+php artisan key:generate
+if (!(Test-Path .\database\database.sqlite)) { New-Item -Path .\database\database.sqlite -ItemType File }
+npm.cmd install
+npm.cmd run build
+php artisan migrate --seed
+php artisan serve
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+If PowerShell says scripts are disabled when you type `npm`, use `npm.cmd` as shown above. If `npm.cmd` is not found, install the LTS version of Node.js and reopen VS Code.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Open <http://127.0.0.1:8000> in your browser. Keep the terminal running `php artisan serve` open while you use the app.
 
-## Laravel Sponsors
+## Demo accounts
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+The database seeder creates these local demo accounts. They all use the password `password`:
 
-### Premium Partners
+| Role | Email |
+| --- | --- |
+| Admin | `admin@test.com` |
+| Lecturer | `lecturer@test.com` |
+| Student | `student1@test.com` through `student5@test.com` |
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+These are for local development only. Change demo passwords before using the application beyond local development.
 
-## Contributing
+## Features
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- **Admin:** manage students, lecturers, and courses; view student registrations; search records; view the registration report.
+- **Lecturer:** view assigned courses and their enrolled students.
+- **Student:** browse and search available courses, register, view registered courses, and drop a course.
+- New accounts created through the public registration form receive the Student role.
 
-## Code of Conduct
+## Useful commands
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```powershell
+php artisan serve
+php artisan migrate --seed
+npm.cmd run build
+```
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Run `php artisan serve` in one terminal. After changing CSS or JavaScript, run `npm.cmd run build` again to refresh the production assets.

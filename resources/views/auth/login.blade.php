@@ -1,47 +1,88 @@
 <x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+    <div class="auth-form-heading">
+        <span class="auth-form-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+                <path
+                    d="M4 10.5 12 5l8 5.5v8a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5v-8Z"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linejoin="round"
+                />
+                <path
+                    d="M9 20v-6h6v6M8 10h.01M12 10h.01M16 10h.01"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                />
+            </svg>
+        </span>
+        <p class="auth-form-kicker">WELCOME BACK</p>
+        <h2>Sign in to your account</h2>
+        <p class="auth-form-subtitle">Use your email and password to continue.</p>
+    </div>
 
-    <form method="POST" action="{{ route('login') }}">
+    <x-auth-session-status class="auth-session-status" :status="session('status')" />
+
+    <form method="POST" action="{{ route('login') }}" class="auth-form">
         @csrf
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <div class="auth-field">
+            <x-input-label for="email" :value="__('Email address')" class="auth-label" />
+            <input
+                id="email"
+                class="auth-input"
+                type="email"
+                name="email"
+                value="{{ old('email') }}"
+                placeholder="you@example.com"
+                required
+                autofocus
+                autocomplete="username"
+            />
+            <x-input-error :messages="$errors->get('email')" class="auth-error" />
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        <div class="auth-field">
+            <div class="auth-label-row">
+                <x-input-label for="password" :value="__('Password')" class="auth-label" />
+                @if (Route::has('password.request'))
+                    <a class="auth-inline-link" href="{{ route('password.request') }}">Forgot password?</a>
+                @endif
+            </div>
+            <input
+                id="password"
+                class="auth-input"
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+                autocomplete="current-password"
+            />
+            <x-input-error :messages="$errors->get('password')" class="auth-error" />
         </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+        <div class="auth-remember-row">
+            <label for="remember_me" class="auth-remember-label">
+                <input id="remember_me" type="checkbox" name="remember" class="auth-checkbox">
+                <span>Remember me</span>
             </label>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
+        <button type="submit" class="auth-submit">
+            <span>Sign in</span>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                    d="M5 12h14m-6-6 6 6-6 6"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                />
+            </svg>
+        </button>
     </form>
+
+    @if (Route::has('register'))
+        <p class="auth-register-prompt">New to the portal? <a href="{{ route('register') }}">Create an account</a></p>
+    @endif
 </x-guest-layout>

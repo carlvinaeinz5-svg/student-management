@@ -5,21 +5,44 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                    <a href="{{ route('dashboard') }}" class="text-lg font-bold tracking-tight text-blue-700 no-underline">
+                        Student Portal
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-6 lg:-my-px lg:ms-8 lg:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    @if (Auth::user()->hasRole('Admin'))
+                        <x-nav-link :href="route('students.index')" :active="request()->routeIs('students.*')">
+                            {{ __('Students') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('lecturers.index')" :active="request()->routeIs('lecturers.*')">
+                            {{ __('Lecturers') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('courses.index')" :active="request()->routeIs('courses.*')">
+                            {{ __('Courses') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('reports.course-registrations')" :active="request()->routeIs('reports.*')">{{ __('Registration report') }}</x-nav-link>
+                    @elseif (Auth::user()->hasRole('Lecturer'))
+                        <x-nav-link :href="route('courses.my-courses')" :active="request()->routeIs('courses.my-courses*')">
+                            {{ __('My courses') }}
+                        </x-nav-link>
+                    @elseif (Auth::user()->hasRole('Student'))
+                        <x-nav-link :href="route('courses.available')" :active="request()->routeIs('courses.available')">
+                            {{ __('Available courses') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('courses.registered')" :active="request()->routeIs('courses.registered')">
+                            {{ __('My courses') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
             <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <div class="hidden lg:flex lg:items-center lg:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
@@ -53,7 +76,7 @@
             </div>
 
             <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
+            <div class="-me-2 flex items-center lg:hidden">
                 <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -65,11 +88,34 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+    <div :class="{'block': open, 'hidden': ! open}" class="hidden lg:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            @if (Auth::user()->hasRole('Admin'))
+                <x-responsive-nav-link :href="route('students.index')" :active="request()->routeIs('students.*')">
+                    {{ __('Students') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('lecturers.index')" :active="request()->routeIs('lecturers.*')">
+                    {{ __('Lecturers') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('courses.index')" :active="request()->routeIs('courses.*')">
+                    {{ __('Courses') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('reports.course-registrations')">{{ __('Registration report') }}</x-responsive-nav-link>
+            @elseif (Auth::user()->hasRole('Lecturer'))
+                <x-responsive-nav-link :href="route('courses.my-courses')" :active="request()->routeIs('courses.my-courses*')">
+                    {{ __('My courses') }}
+                </x-responsive-nav-link>
+            @elseif (Auth::user()->hasRole('Student'))
+                <x-responsive-nav-link :href="route('courses.available')" :active="request()->routeIs('courses.available')">
+                    {{ __('Available courses') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('courses.registered')" :active="request()->routeIs('courses.registered')">
+                    {{ __('My courses') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
